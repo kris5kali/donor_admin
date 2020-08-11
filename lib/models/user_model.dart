@@ -9,6 +9,7 @@ class UserModel {
   final String jenisKelamin;
   final String membutuhkanDarah;
   final String noHp;
+  final String noWA;
   final String image;
   final String role;
   final String tanggalMembutuhkan;
@@ -19,6 +20,7 @@ class UserModel {
     this.jenisKelamin,
     this.membutuhkanDarah,
     this.noHp,
+    this.noWA,
     this.id,
     this.username,
     this.email,
@@ -37,6 +39,7 @@ class UserModel {
       jenisKelamin: snapshot.data["jenisKelamin"],
       membutuhkanDarah: snapshot.data["membutuhkanDarah"],
       noHp: snapshot.data["noHp"],
+      noWA: snapshot.data["noWA"],
       image: snapshot.data['image'],
       role: snapshot.data['role'],
       tanggalMembutuhkan: snapshot.data['tanggalMembutuhkan'],

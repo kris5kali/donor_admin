@@ -196,7 +196,7 @@ class _AddPendonorPageState extends State<AddPendonorPage> {
                           "golonganDarah": _golonganDarah,
                           "image": "https://i.pinimg.com/564x/51/f6/fb/51f6fb256629fc755b8870c801092942.jpg",
                           "role": "pendonor",
-                          "membutuhkanDarah": _golonganDarah,
+                          "membutuhkanDarah": '0',
                         }).then((value) {
                           Firestore.instance
                               .collection('users')
@@ -211,7 +211,7 @@ class _AddPendonorPageState extends State<AddPendonorPage> {
                             "golonganDarah": _golonganDarah,
                             "image": "https://i.pinimg.com/564x/51/f6/fb/51f6fb256629fc755b8870c801092942.jpg",
                             "role": "pendonor",
-                            "membutuhkanDarah": _golonganDarah,
+                            "membutuhkanDarah": '0',
                           });
                           Navigator.pop(context);
                         }).catchError((e) {

@@ -1,3 +1,4 @@
+import 'package:donoradmin/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/gol_a_min_widget.dart';
@@ -51,11 +52,16 @@ class _KecocokanDarahPageState extends State<KecocokanDarahPage> {
       value: "O+",
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Kecocokan Darah', style: TextStyle(color: Colors.white)),
+        backgroundColor: kPrimaryColor,
+        title: Text(
+          'Kecocokan Darah',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Center(
         child: Container(

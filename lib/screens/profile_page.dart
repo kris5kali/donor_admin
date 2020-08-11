@@ -1,3 +1,4 @@
+import 'package:donoradmin/widgets/gender_admin_change_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text("Profil"),
       ),
       body: StreamBuilder(
-        stream: profileProv.getDocumentById(authProv.userModel.id),
+        stream: profileProv.getDocumentAdminById('gByywwWZiZP5QDxGWlFhTVVzQFC2'),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -68,10 +69,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   title: profileProv.imageFile.toString()))
                               .then((value) {
                             profileProv.updateDocumentUser(
-                                authProv.userModel.id,
+                                'gByywwWZiZP5QDxGWlFhTVVzQFC2',
                                 {"image": profileProv.urlImage});
                             profileProv.updateDocumentAdmin(
-                                authProv.userModel.id,
+                                'gByywwWZiZP5QDxGWlFhTVVzQFC2',
                                 {"image": profileProv.urlImage});
                             profileProv.clear();
                           });
@@ -129,22 +130,20 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: <Widget>[
                           SizedBox(height: 30),
                           profileItem(
-                            title: 'Jenis Kelamin',
-                            value: user['jenisKelamin'],
+                            title: 'No. WA',
+                            value: user['noWA'],
                             onTap: () {
-                              showModalBottomSheet(
+                              changeNoWADialog(
                                 context: context,
-                                builder: (context) {
-                                  return ChangeGenderDialog(
-                                    genderRole: genderRole,
-                                  );
-                                },
+                                profileProv: profileProv,
+                                user: user,
+                                authProv: authProv,
                               );
                             },
                           ),
                           SizedBox(height: 10),
                           profileItem(
-                            title: 'No. WA/HP',
+                            title: 'No. HP',
                             value: user['noHp'],
                             onTap: () {
                               changeNoHpDialog(
@@ -195,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
               validator: profileProv.validateText,
               obscureText: false,
               initialValue: user['alamat'],
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               prefixIcon: Icon(Icons.phone),
               hintText: 'Masukkan Alamat Lengkap',
               onChanged: (value) => profileProv.alamatChanged(value),
@@ -214,10 +213,10 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 if (profileProv.formKey.currentState.validate()) {
                   profileProv.formKey.currentState.save();
-                  profileProv.updateDocumentUser(authProv.userModel.id, {
+                  profileProv.updateDocumentUser('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
                     "alamat": profileProv.alamat,
                   }).then((value) {
-                    profileProv.updateDocumentAdmin(authProv.userModel.id, {
+                    profileProv.updateDocumentAdmin('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
                       "alamat": profileProv.alamat,
                     });
                   }).then((value) => Get.back());
@@ -233,6 +232,60 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+
+
+  Future changeNoWADialog({context, profileProv, user, AuthProvider authProv}) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Ganti No. WA'),
+          content: Form(
+            key: profileProv.formKey,
+            autovalidate: profileProv.autoValidate,
+            child: TextFormFieldWidget(
+              validator: profileProv.validateNoHp,
+              obscureText: false,
+              initialValue: user['noWA'],
+              keyboardType: TextInputType.number,
+              prefixIcon: Icon(Icons.phone),
+              hintText: 'Masukkan No. WA',
+              onChanged: (value) => profileProv.noWAChanged(value),
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Batal'),
+              onPressed: () {
+                Get.back();
+              },
+              color: kGreyColor,
+            ),
+            FlatButton(
+              child: Text('Simpan'),
+              onPressed: () {
+                if (profileProv.formKey.currentState.validate()) {
+                  profileProv.formKey.currentState.save();
+                  profileProv.updateDocumentUser('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
+                    "noWA": profileProv.noWA,
+                  }).then((value) {
+                    profileProv.updateDocumentAdmin('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
+                      "noWA": profileProv.noWA,
+                    });
+                  }).then((value) => Get.back());
+                  profileProv.autoValidate = false;
+                } else {
+                  profileProv.autoValidate = true;
+                }
+              },
+              color: kPrimaryColor,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   Future changeNoHpDialog({context, profileProv, user, AuthProvider authProv}) {
     return showDialog(
@@ -266,10 +319,10 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 if (profileProv.formKey.currentState.validate()) {
                   profileProv.formKey.currentState.save();
-                  profileProv.updateDocumentUser(authProv.userModel.id, {
+                  profileProv.updateDocumentUser('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
                     "noHp": profileProv.noHp,
                   }).then((value) {
-                    profileProv.updateDocumentAdmin(authProv.userModel.id, {
+                    profileProv.updateDocumentAdmin('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
                       "noHp": profileProv.noHp,
                     });
                   }).then((value) => Get.back());
@@ -323,10 +376,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (profileProv.formKey.currentState.validate()) {
                   profileProv.formKey.currentState.save();
 
-                  profileProv.updateDocumentUser(authProv.userModel.id, {
+                  profileProv.updateDocumentUser('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
                     "username": profileProv.username,
                   }).then((value) {
-                    profileProv.updateDocumentAdmin(authProv.userModel.id, {
+                    profileProv.updateDocumentAdmin('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
                       "username": profileProv.username,
                     });
                   }).then((value) => Get.back());

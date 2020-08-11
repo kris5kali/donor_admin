@@ -24,6 +24,7 @@ class ProfileProvider with ChangeNotifier {
   String _email;
   String _groupGender;
   String _noHp;
+  String _noWA;
   String _golonganDarah;
   String _alamat;
   String _jenisKelamin;
@@ -53,6 +54,7 @@ class ProfileProvider with ChangeNotifier {
   String get groupGender => _groupGender;
 
   String get noHp => _noHp;
+  String get noWA =>_noWA;
 
   String get golonganDarah => _golonganDarah;
 
@@ -159,6 +161,11 @@ class ProfileProvider with ChangeNotifier {
     _noHp = value;
     notifyListeners();
   }
+  void noWAChanged(String value) {
+    _noWA = value;
+    notifyListeners();
+  }
+
 
   void usernameChanged(String value) {
     _username = value;
@@ -252,6 +259,9 @@ class ProfileProvider with ChangeNotifier {
 
   Stream getDocumentById(String id) {
     return _api.getDocumentByIdUsingStream(id);
+  }
+  Stream getDocumentAdminById(String id) {
+    return _adminApi.getDocumentByIdUsingStream(id);
   }
 
   // Select an image via gallery or camera

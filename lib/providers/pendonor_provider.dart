@@ -24,4 +24,8 @@ class PendonorProvider with ChangeNotifier {
         result.documents.map((e) => UserModel.fromFirestore(e)).toList();
     return _listUserModel;
   }
+  Stream getDocumentAdminById(String id)  {
+    var result = _apiAdmin.getDocumentByIdUsingStream(id);
+    return result;
+  }
 }

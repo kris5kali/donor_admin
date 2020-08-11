@@ -101,17 +101,23 @@ class _AddPasienPageState extends State<AddPasienPage> {
                   ),
                 ),
                 SizedBox(height: 15),
-                ListTile(
-                  leading: Icon(FlutterIcons.transgender_alt_faw),
-                  title: DropdownButton(
-                    items: jenisKelaminItems,
-                    hint: Text("Jenis Kelamin"),
-                    value: _jenisKelamin,
-                    onChanged: (val) {
-                      setState(() {
-                        _jenisKelamin = val;
-                      });
-                    },
+                Center(
+                  child: ListTile(
+                    leading: Image.asset(
+                      'assets/images/gender.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    title: DropdownButton(
+                      items: jenisKelaminItems,
+                      hint: Text("Jenis Kelamin"),
+                      value: _jenisKelamin,
+                      onChanged: (val) {
+                        setState(() {
+                          _jenisKelamin = val;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 15),
@@ -128,9 +134,9 @@ class _AddPasienPageState extends State<AddPasienPage> {
                 ),
                 SizedBox(height: 15),
                 ListTile(
-                  leading: Icon(Icons.history),
+                  leading: Icon(Icons.date_range),
                   title: TextField(
-                    decoration: InputDecoration(hintText: "terakhir donor"),
+                    decoration: InputDecoration(hintText: "tanggal membutuhkan"),
                     onChanged: (val) {
                       setState(() {
                         _riwayat = val;
@@ -192,8 +198,8 @@ class _AddPasienPageState extends State<AddPasienPage> {
                           "noHp": _noHp,
                           "golonganDarah": _golonganDarah,
                           "image": "https://i.pinimg.com/564x/51/f6/fb/51f6fb256629fc755b8870c801092942.jpg",
-                          "role": "pendonor",
-                          "membutuhkanDarah": _golonganDarah,
+                          "role": "Pasien",
+                          "membutuhkanDarah": '0',
                         }).then((value) {
                           Firestore.instance
                               .collection('users')
@@ -208,7 +214,7 @@ class _AddPasienPageState extends State<AddPasienPage> {
                             "golonganDarah": _golonganDarah,
                             "image": "https://i.pinimg.com/564x/51/f6/fb/51f6fb256629fc755b8870c801092942.jpg",
                             "role": "pendonor",
-                            "membutuhkanDarah": _golonganDarah,
+                            "membutuhkanDarah": '0',
                           });
                           Navigator.pop(context);
                         }).catchError((e) {

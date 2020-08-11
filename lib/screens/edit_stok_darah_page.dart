@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donoradmin/models/stok_darah_model.dart';
+import 'package:donoradmin/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class UbahStokDarah extends StatefulWidget {
@@ -21,6 +22,8 @@ class _UbahStokDarahState extends State<UbahStokDarah> {
     final stokController = TextEditingController(text: widget.stok.stok);
     return Scaffold(
       appBar: AppBar(
+
+        backgroundColor: kPrimaryColor,
         title: Text("Edit Stok Darah"),
         centerTitle: true,
       ),

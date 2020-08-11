@@ -8,6 +8,7 @@ class UserCard extends StatelessWidget {
   final UserModel user;
 
   const UserCard({Key key, @required this.user}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,17 +30,21 @@ class UserCard extends StatelessWidget {
           Positioned(
             top: 0,
             right: 0,
-            child: Container(
-              height: 24.0,
-              width: 80.0,
-              decoration: BoxDecoration(color: Colors.blue[100]),
-              child: Center(
-                child: Text(
-                  "Rhesus +",
-                  style: TextStyle(color: Colors.blueAccent),
-                ),
-              ),
-            ),
+            child: user.role == "Pasien"
+                ? Container(
+                    height: 24.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Urgent",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                : Container(),
           ),
           Positioned(
             top: 12,
@@ -69,7 +74,7 @@ class UserCard extends StatelessWidget {
                 SizedBox(height: 8),
                 Row(
                   children: <Widget>[
-                    Icon(FlutterIcons.transgender_alt_faw),
+                    Icon(user.jenisKelamin == 'Laki-laki' ? FlutterIcons.md_male_ion: FlutterIcons.md_female_ion),
                     SizedBox(width: 10),
                     Text(user.jenisKelamin ?? 'Data Kosong',
                         style: kDescription),
@@ -92,7 +97,7 @@ class UserCard extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Icon(
-                      Icons.directions_car,
+                      Icons.location_on,
                       color: Colors.black,
                       size: 20,
                     ),

@@ -62,18 +62,18 @@ class PasienPage extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: kPrimaryColor,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => AddPasienPage(),
-            ),
-          );
-        },
-        child: Icon(Icons.add),
-      ),
+//      floatingActionButton: FloatingActionButton(
+//        backgroundColor: kPrimaryColor,
+//        onPressed: () {
+//          Navigator.push(
+//            context,
+//            MaterialPageRoute(
+//              builder: (BuildContext context) => AddPasienPage(),
+//            ),
+//          );
+//        },
+//        child: Icon(Icons.add),
+//      ),
     );
   }
 }

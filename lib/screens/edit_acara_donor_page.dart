@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donoradmin/models/acara_donor_page.dart';
+import 'package:donoradmin/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class EditAcaraDonor extends StatefulWidget {
@@ -19,6 +20,7 @@ class _EditAcaraDonorState extends State<EditAcaraDonor> {
     final isiController = TextEditingController(text: widget.acara.isi);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kPrimaryColor,
         title: Text("Ubah Acara Donor"),
       ),
       body: Container(

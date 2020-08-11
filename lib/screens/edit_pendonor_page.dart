@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donoradmin/models/user_model.dart';
+import 'package:donoradmin/utils/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -23,6 +24,7 @@ class EditPendonorPage extends StatefulWidget {
 
 class _EditPendonorPageState extends State<EditPendonorPage> {
   final _formKey = GlobalKey<FormState>();
+
 
   File _image;
   final picker = ImagePicker();
@@ -75,8 +77,11 @@ class _EditPendonorPageState extends State<EditPendonorPage> {
         TextEditingController(text: widget.user.tanggalMembutuhkan);
     TextEditingController noHpController =
         TextEditingController(text: widget.user.noHp);
+
+    String imagePendonor = widget.user.image;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kPrimaryColor,
         title: Text("Edit Pendonor"),
         centerTitle: true,
       ),
@@ -101,8 +106,9 @@ class _EditPendonorPageState extends State<EditPendonorPage> {
                   ),
                   SizedBox(height: 15),
                   ListTile(
-                    leading: Icon(FlutterIcons.gender_transgender_mco),
+                    leading: Icon(FlutterIcons.gender_transgender_mco,color: Colors.white),
                     title: DropdownButton(
+                      isExpanded: true,
                       items: jenisKelaminItems,
                       hint: Text("Jenis Kelamin"),
                       value: widget.jenisKelamin,
@@ -168,22 +174,25 @@ class _EditPendonorPageState extends State<EditPendonorPage> {
                     title: Center(
                       child: _image == null
                           ? Image.network(widget.user.image)
-                          : Image.file(_image),
+                          : Image.file(_image??''),
                     ),
                   ),
                   SizedBox(height: 20),
                   RaisedButton(
                     child: Text("Ubah Pendonor"),
                     onPressed: () async {
-                      StorageReference storageReference = FirebaseStorage
-                          .instance
-                          .ref()
-                          .child('pendonor/${Path.basename(_image.path)}');
-                      StorageUploadTask uploadTask =
-                          storageReference.putFile(_image);
-                      var imageUrl = await (await uploadTask.onComplete)
-                          .ref
-                          .getDownloadURL();
+                      if (_image != null) {
+                        StorageReference storageReference = FirebaseStorage
+                            .instance
+                            .ref()
+                            .child('pendonor/${Path.basename(_image.path)}');
+                        StorageUploadTask uploadTask =
+                            storageReference.putFile(_image);
+                        var imageUrl = await (await uploadTask.onComplete)
+                            .ref
+                            .getDownloadURL();
+                        imagePendonor = imageUrl;
+                      }
 
                       Firestore.instance
                           .collection('pendonor')
@@ -195,7 +204,7 @@ class _EditPendonorPageState extends State<EditPendonorPage> {
                             "tanggalMembutuhkan": riwayatController.text,
                             "noHp": noHpController.text,
                             "golonganDarah": widget.golonganDarah,
-                            "image": imageUrl,
+                            "image": imagePendonor,
                           })
                           .then((value) => Firestore.instance
                                   .collection('users')
@@ -207,7 +216,7 @@ class _EditPendonorPageState extends State<EditPendonorPage> {
                                 "tanggalMembutuhkan": riwayatController.text,
                                 "noHp": noHpController.text,
                                 "golonganDarah": widget.golonganDarah,
-                                "image": imageUrl,
+                                "image": imagePendonor,
                               }))
                           .then((onValue) {
                             Navigator.pop(context);

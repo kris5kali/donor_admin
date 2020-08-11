@@ -7,15 +7,18 @@ import '../providers/profile_provider.dart';
 import '../utils/constants.dart';
 import '../utils/screens.dart';
 
-class ChangeGenderDialog extends StatefulWidget {
-  final String genderRole;
+class ChangeGenderAdminDialog extends StatefulWidget {
+//  final String genderRole;
 
-  const ChangeGenderDialog({Key key,@required this.genderRole}) : super(key: key);
+  const ChangeGenderAdminDialog({Key key, })
+      : super(key: key);
+
   @override
-  _ChangeGenderDialogState createState() => _ChangeGenderDialogState();
+  _ChangeGenderAdminDialogState createState() =>
+      _ChangeGenderAdminDialogState();
 }
 
-class _ChangeGenderDialogState extends State<ChangeGenderDialog> {
+class _ChangeGenderAdminDialogState extends State<ChangeGenderAdminDialog> {
   @override
   Widget build(BuildContext context) {
     final profileProv = Provider.of<ProfileProvider>(context);
@@ -76,24 +79,9 @@ class _ChangeGenderDialogState extends State<ChangeGenderDialog> {
                   SizedBox(width: 12.0),
                   FlatButton(
                     onPressed: () {
-                      profileProv.updateDocumentUser(authProv.userModel.id, {
+                      profileProv.updateDocumentPasien(
+                          'gByywwWZiZP5QDxGWlFhTVVzQFC2', {
                         "jenisKelamin": profileProv.groupGender,
-                      }).then((value) {
-                        if (widget.genderRole== 'Pendonor') {
-                          profileProv
-                              .updateDocumentPendonor(authProv.userModel.id, {
-                            "jenisKelamin": profileProv.groupGender,
-                          });
-                        } else if (widget.genderRole == 'Pasien') {
-                          profileProv.updateDocumentPasien(authProv.userModel.id, {
-                            "jenisKelamin": profileProv.groupGender,
-                          });
-                        }
-                        else if (widget.genderRole == 'admin') {
-                          profileProv.updateDocumentPasien('gByywwWZiZP5QDxGWlFhTVVzQFC2', {
-                            "jenisKelamin": profileProv.groupGender,
-                          });
-                        }
                       }).then((value) => Get.back());
                     },
                     child: Text('Simpan',

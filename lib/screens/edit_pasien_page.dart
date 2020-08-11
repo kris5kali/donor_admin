@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donoradmin/models/user_model.dart';
+import 'package:donoradmin/utils/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -68,15 +69,18 @@ class _EditPasienPageState extends State<EditPasienPage> {
   @override
   Widget build(BuildContext context) {
     TextEditingController namaController =
-    TextEditingController(text: widget.user.username);
+        TextEditingController(text: widget.user.username);
     TextEditingController alamatController =
-    TextEditingController(text: widget.user.alamat);
+        TextEditingController(text: widget.user.alamat);
     TextEditingController riwayatController =
-    TextEditingController(text: widget.user.tanggalMembutuhkan);
+        TextEditingController(text: widget.user.tanggalMembutuhkan);
     TextEditingController noHpController =
-    TextEditingController(text: widget.user.noHp);
+        TextEditingController(text: widget.user.noHp);
+
+    String imagePasien = widget.user.image;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kPrimaryColor,
         title: Text("Edit Pasien"),
         centerTitle: true,
       ),
@@ -96,12 +100,12 @@ class _EditPasienPageState extends State<EditPasienPage> {
                       decoration: InputDecoration(hintText: "nama"),
                       controller: namaController,
                       validator: (val) =>
-                      val.isEmpty ? "Kolom tidak boleh kosong!" : null,
+                          val.isEmpty ? "Kolom tidak boleh kosong!" : null,
                     ),
                   ),
                   SizedBox(height: 15),
                   ListTile(
-                    leading: Icon(FlutterIcons.gender_transgender_mco),
+                    leading: Icon(FlutterIcons.gender_transgender_mco,color: Colors.white,),
                     title: DropdownButton(
                       items: jenisKelaminItems,
                       hint: Text("Jenis Kelamin"),
@@ -120,7 +124,7 @@ class _EditPasienPageState extends State<EditPasienPage> {
                       decoration: InputDecoration(hintText: "alamat"),
                       controller: alamatController,
                       validator: (val) =>
-                      val.isEmpty ? "Kolom tidak boleh kosong!" : null,
+                          val.isEmpty ? "Kolom tidak boleh kosong!" : null,
                     ),
                   ),
                   SizedBox(height: 15),
@@ -130,7 +134,7 @@ class _EditPasienPageState extends State<EditPasienPage> {
                       decoration: InputDecoration(hintText: "riwayat"),
                       controller: riwayatController,
                       validator: (val) =>
-                      val.isEmpty ? "Kolom tidak boleh kosong!" : null,
+                          val.isEmpty ? "Kolom tidak boleh kosong!" : null,
                     ),
                   ),
                   SizedBox(height: 15),
@@ -140,7 +144,7 @@ class _EditPasienPageState extends State<EditPasienPage> {
                       decoration: InputDecoration(hintText: "noHp"),
                       controller: noHpController,
                       validator: (val) =>
-                      val.isEmpty ? "Kolom tidak boleh kosong!" : null,
+                          val.isEmpty ? "Kolom tidak boleh kosong!" : null,
                     ),
                   ),
                   SizedBox(height: 15),
@@ -168,50 +172,52 @@ class _EditPasienPageState extends State<EditPasienPage> {
                     title: Center(
                       child: _image == null
                           ? Image.network(widget.user.image)
-                          : Image.file(_image),
+                          : Image.file(_image ?? ''),
                     ),
                   ),
                   SizedBox(height: 20),
                   RaisedButton(
                     child: Text("Ubah Pasien"),
                     onPressed: () async {
-                      StorageReference storageReference = FirebaseStorage
-                          .instance
-                          .ref()
-                          .child('pendonor/${Path.basename(_image.path)}');
-                      StorageUploadTask uploadTask =
-                      storageReference.putFile(_image);
-                      var imageUrl = await (await uploadTask.onComplete)
-                          .ref
-                          .getDownloadURL();
-
+                      if (_image != null) {
+                        StorageReference storageReference = FirebaseStorage
+                            .instance
+                            .ref()
+                            .child('pendonor/${Path.basename(_image.path)}');
+                        StorageUploadTask uploadTask =
+                            storageReference.putFile(_image);
+                        var imageUrl = await (await uploadTask.onComplete)
+                            .ref
+                            .getDownloadURL();
+                        imagePasien = imageUrl;
+                      }
                       Firestore.instance
                           .collection('pasien')
                           .document(widget.user.id)
                           .updateData({
-                        "username": namaController.text,
-                        "jenisKelamin": widget.jenisKelamin,
-                        "alamat": alamatController.text,
-                        "tanggalMembutuhkan": riwayatController.text,
-                        "noHp": noHpController.text,
-                        "golonganDarah": widget.golonganDarah,
-                        "image": imageUrl,
-                      })
+                            "username": namaController.text,
+                            "jenisKelamin": widget.jenisKelamin,
+                            "alamat": alamatController.text,
+                            "tanggalMembutuhkan": riwayatController.text,
+                            "noHp": noHpController.text,
+                            "golonganDarah": widget.golonganDarah,
+                            "image": imagePasien,
+                          })
                           .then((value) => Firestore.instance
-                          .collection('users')
-                          .document(widget.user.id)
-                          .updateData({
-                        "username": namaController.text,
-                        "jenisKelamin": widget.jenisKelamin,
-                        "alamat": alamatController.text,
-                        "tanggalMembutuhkan": riwayatController.text,
-                        "noHp": noHpController.text,
-                        "golonganDarah": widget.golonganDarah,
-                        "image": imageUrl,
-                      }))
+                                  .collection('users')
+                                  .document(widget.user.id)
+                                  .updateData({
+                                "username": namaController.text,
+                                "jenisKelamin": widget.jenisKelamin,
+                                "alamat": alamatController.text,
+                                "tanggalMembutuhkan": riwayatController.text,
+                                "noHp": noHpController.text,
+                                "golonganDarah": widget.golonganDarah,
+                                "image": imagePasien,
+                              }))
                           .then((onValue) {
-                        Navigator.pop(context);
-                      });
+                            Navigator.pop(context);
+                          });
                     },
                   )
                 ],
